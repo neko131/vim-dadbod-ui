@@ -98,6 +98,25 @@ let s:mysql = {
       \ 'filetype': 'mysql',
       \ }
 
+let s:mariadb_foreign_key_query =  "
+      \ SELECT referenced_table_name, referenced_column_name, referenced_table_schema
+      \ from information_schema.key_column_usage
+      \ where referenced_table_name is not null and column_name = '{col_name}' LIMIT 1"
+let s:mariadb = {
+      \ 'foreign_key_query': s:mariadb_foreign_key_query,
+      \ 'schemes_query': 'SELECT schema_name FROM information_schema.schemata',
+      \ 'schemes_tables_query': 'SELECT table_schema, table_name FROM information_schema.tables',
+      \ 'select_foreign_key_query': 'select * from %s.%s where %s = %s',
+      \ 'cell_line_number': 3,
+      \ 'requires_stdin': v:true,
+      \ 'cell_line_pattern': '^+-\++-\+',
+      \ 'parse_results': {results, min_len -> s:results_parser(results[1:], '\t', min_len)},
+      \ 'default_scheme': '',
+      \ 'layout_flag': '\\G',
+      \ 'quote': 0,
+      \ 'filetype': 'sql',
+      \ }
+
 let s:oracle_args = join(
       \    [
            \  'SET linesize 4000',
@@ -177,6 +196,7 @@ let s:schemas = {
       \ 'postgresql': s:postgresql,
       \ 'sqlserver': s:sqlserver,
       \ 'mysql': s:mysql,
+      \ 'mariadb': s:mariadb,
       \ 'oracle': s:oracle,
       \ 'bigquery': s:bigquery,
       \ }

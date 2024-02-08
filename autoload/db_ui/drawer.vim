@@ -624,6 +624,10 @@ function! s:drawer.populate_tables(db) abort
     call filter(a:db.tables.list, 'v:val !~? "mysql: [Warning\\]" && v:val !~? "Tables_in_"')
   endif
 
+  if a:db.scheme =~? '^mariadb'
+    call filter(a:db.tables.list, 'v:val !~? "mariadb: [Warning\\]" && v:val !~? "Tables_in_"')
+  endif
+
   call self.populate_table_items(a:db.tables)
   return a:db
 endfunction

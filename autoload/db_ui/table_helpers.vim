@@ -39,6 +39,14 @@ let s:mysql = {
       \ 'Primary Keys': "SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE TABLE_SCHEMA = '{schema}' AND TABLE_NAME = '{table}' AND CONSTRAINT_TYPE = 'PRIMARY KEY'",
       \ }
 
+let s:mariadb = {
+      \ 'List': 'SELECT * from {optional_schema}`{table}` LIMIT 200',
+      \ 'Columns': 'DESCRIBE {optional_schema}`{table}`',
+      \ 'Indexes': 'SHOW INDEXES FROM {optional_schema}`{table}`',
+      \ 'Foreign Keys': "SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE TABLE_SCHEMA = '{schema}' AND TABLE_NAME = '{table}' AND CONSTRAINT_TYPE = 'FOREIGN KEY'",
+      \ 'Primary Keys': "SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE TABLE_SCHEMA = '{schema}' AND TABLE_NAME = '{table}' AND CONSTRAINT_TYPE = 'PRIMARY KEY'",
+      \ }
+
 let s:oracle_from = "
       \FROM all_constraints N\n
       \JOIN all_cons_columns L\n\t
@@ -185,6 +193,7 @@ let s:helpers = {
       \ 'bigquery': s:bigquery,
       \ 'postgresql': s:postgres,
       \ 'mysql': s:mysql,
+      \ 'mariadb': s:mariadb,
       \ 'oracle': s:oracle,
       \ 'sqlite': s:sqlite,
       \ 'sqlserver': s:sqlserver,
